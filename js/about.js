@@ -13,17 +13,66 @@ function parseTweets(runkeeper_tweets) {
 	//It works correctly, your task is to update the text of the other tags in the HTML file!
 	document.getElementById('numberTweets').innerText = tweet_array.length;	
 
+	// TWEET DATES
+	const tweetDates = tweet_array.map(tweet => tweet.time);
+	const earliestTweetDate = new Date(Math.min(...tweetDates));
+	const latestTweetDate = new Date(Math.max(...tweetDates));
 	
-	// Tweet Dates
-	const dates = tweet_array.map(tweet => tweet.time);
-	const earliestTweetDate = new Date(Math.min(...dates));
-	const latestTweetDate = new Date(Math.max(...dates));
-	
+	// Update HMTL page with dates
 	const dateFormat = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	document.getElementById('firstDate').innerText = earliestTweetDate.toLocaleDateString(undefined, dateFormat);
 	document.getElementById('lastDate').innerText = latestTweetDate.toLocaleDateString(undefined, dateFormat);
   
+	// TWEET CATEGORIES
+	let completedTweets = 0;
+	let liveTweets = 0;
+	let achievementTweets = 0;
+	let miscellaneousTweets = 0;
+	let userWrittenTweets = 0;
+	
+	// Categorize all tweets
+	tweet_array.forEach(tweet => {
+		switch (tweet.source) {
+		  case "completedTweet":
+			completedTweets++;
+			if (tweet.written) {
+				userWrittenTweets++;
+			}
+			break;
+		  case "liveTweet":
+			liveTweets++;
+			break;
+		  case "achievementTweet":
+			achievementTweets++;
+			break;
+		  default:
+			miscellaneousTweets++;
+		}
+	  });
 
+	
+	// Update HTML page with numbers and percentages
+	const formatPct = (count) => math.format((count / tweet_array.length) * 100, { notation: 'fixed', precision: 2 });
+	const writtenFormatPct = (count) => math.format((count / completedTweets) * 100, { notation: 'fixed', precision: 2 });
+
+	
+	document.querySelectorAll('.completedEvents').forEach(element => {
+		element.innerText = completedTweets;
+	});
+
+	document.querySelector('.completedEventsPct').innerText = `${formatPct(completedTweets)}%`;
+
+	document.querySelector('.liveEvents').innerText = liveTweets;
+	document.querySelector('.liveEventsPct').innerText = `${formatPct(liveTweets)}%`;
+
+	document.querySelector('.achievements').innerText = achievementTweets;
+	document.querySelector('.achievementsPct').innerText = `${formatPct(achievementTweets)}%`;
+
+	document.querySelector('.miscellaneous').innerText = miscellaneousTweets;
+	document.querySelector('.miscellaneousPct').innerText = `${formatPct(miscellaneousTweets)}%`;
+	
+	document.querySelector('.written').innerText = userWrittenTweets;
+	document.querySelector('.writtenPct').innerText = `${writtenFormatPct(userWrittenTweets)}%`;
 
 
 }
