@@ -61,15 +61,23 @@ class Tweet {
     
 
     get activityType():string {
-        if (this.source != 'completed_event') {
+        if (this.source != 'completedTweet') {
             return "unknown";
         }
         //TODO: parse the activity type from the text of the tweet
-        return "";
+        const activityTypes = ['run', 'kickboxing', 'mysports freestyle', 'sports', 'strength workout', 'hike', 'crossfit® workout', 'elliptical workout', 'walk', 'circuit workout', 'yoga practice', 'boxing / mma', 'bike', 'spinning workout'];
+
+        const text = this.text.toLowerCase();
+        for (const activity of activityTypes) {
+            if (text.includes(' '+activity+' ')) {
+                return activity;
+            }
+        }
+        return "unknown";
     }
 
     get distance():number {
-        if(this.source != 'completed_event') {
+        if(this.source != 'completedTweet') {
             return 0;
         }
         //TODO: prase the distance from the text of the tweet
