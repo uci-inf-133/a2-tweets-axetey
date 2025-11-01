@@ -23,7 +23,7 @@ Vega Light: https://vega.github.io/vega-lite/tutorials/getting_started.html
 
 
 4. What classmates or other individuals did you consult as part of this assignment? What did you discuss?
-None
+Han Diedrich - Helped me with finding which data we needed to collect and calculate, and then how to use update the DOM with that data.
 
 5. Is there anything special we need to know in order to run your code?
 Run using live server!
